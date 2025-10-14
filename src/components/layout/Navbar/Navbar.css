@@ -70,12 +70,23 @@
   background: linear-gradient(135deg, #4D97D0, #0A1F56);
   padding: 12px;
   border-radius: 8px;
-  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.3s;
+  width: 48px;       /* Fix box width */
+  height: 48px;      /* Fix box height so navbar doesn't grow */
 }
+
+.logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: scale(2);  /* Increase only the visible logo size */
+  transform-origin: center;
+}
+
+
 
 .logo-section:hover .logo-icon {
   transform: rotate(12deg);

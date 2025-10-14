@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import logo from '../../../assets/Logo.png';
 import { Menu, X, Gauge, Home, Box, Car, Users } from 'lucide-react';
 import './Navbar.css';
 
@@ -32,12 +33,12 @@ const Navbar = () => {
         <div className="navbar-content">
           {/* Logo */}
           <div className="logo-section">
-            <div className="logo-icon-wrapper">
-              <div className="logo-glow"></div>
-              <div className="logo-icon">
-                <Gauge size={28} strokeWidth={2.5} />
-              </div>
+          <div className="logo-icon-wrapper">
+            <div className="logo-glow"></div>
+            <div className="logo-icon">
+              <img src={logo} alt="Smart Tracking Logo" className="logo-image" />
             </div>
+          </div>
             <div className="logo-text">
               <h1 className="logo-title">
                 SMART <span className="logo-highlight">TRACKING</span>

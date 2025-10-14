@@ -10,7 +10,7 @@ const MainLayout = ({ children }) => {
       </main>
       <footer className="main-footer">
         <div className="footer-content">
-          <p>&copy; 2025 Smart Tracking. Tous droits réservés.</p>
+          <p>&copy; 2025 Aurora Racing Technologie. Tous droits réservés.</p>
         </div>
       </footer>
     </div>

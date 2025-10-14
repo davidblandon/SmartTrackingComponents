@@ -41,7 +41,7 @@
   
   @media (min-width: 768px) {
     .cards-grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
   }
   
@@ -93,6 +93,11 @@
   .scan-card:hover {
     background: linear-gradient(135deg, rgba(10, 31, 86, 0.05), rgba(255, 255, 255, 1));
   }
+
+  /* List Card Specific */
+  .list-card:hover {
+    background: linear-gradient(135deg, rgba(77, 151, 208, 0.05), rgba(255, 255, 255, 1));
+  }
   
   /* Card Icon Wrapper */
   .card-icon-wrapper {
@@ -138,6 +143,14 @@
   
   .scan-icon .icon-glow {
     background: #0A1F56;
+  }
+
+  .list-icon {
+    background: linear-gradient(135deg, #4D97D0, #6bb3e0);
+  }
+  
+  .list-icon .icon-glow {
+    background: #4D97D0;
   }
   
   .card-icon {
