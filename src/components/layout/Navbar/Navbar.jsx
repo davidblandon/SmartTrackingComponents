@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '../../../assets/Logo.png';
-import { Menu, X, Gauge, Home, Box, Car, Users } from 'lucide-react';
+import { Menu, X, Home, Box, Car, Users } from 'lucide-react';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -12,7 +12,7 @@ const Navbar = () => {
   const navLinks = [
     { id: 'home', label: 'Accueil', icon: Home, path: '/' },
     { id: 'components', label: 'Composants', icon: Box, path: '/components' },
-    { id: 'cars', label: 'Véhicules', icon: Car, path: '/cars' },
+    { id: 'cars', label: 'Voitures', icon: Car, path: '/cars' },
     { id: 'clients', label: 'Clients', icon: Users, path: '/clients' }
   ];
 

@@ -1,5 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import ComponentsPage from '../pages/Components/ComponentsPage'
+import ComponentsListPage from '../pages/Components/ComponentsListPage'
+import ComponentDetailsPage from '../pages/Components/ComponentsDetailsPage'
 
 // Temporary simple components until we create the actual pages
 const Home = () => <div style={{ padding: '2rem' }}><h1>Accueil</h1><p>Bienvenue à Smart Track</p></div>
@@ -14,6 +16,8 @@ const AppRouter = () => {
       <Route path="/" element={<Home />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/components" element={<ComponentsPage />} />
+      <Route path="/components/list" element={<ComponentsListPage />} />
+      <Route path="/components/details/:qrCode" element={<ComponentDetailsPage />} />
       <Route path="/cars" element={<Cars />} />
       <Route path="/clients" element={<Clients />} />
       <Route path="*" element={<NotFound />} />

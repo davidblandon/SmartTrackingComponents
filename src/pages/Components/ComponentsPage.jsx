@@ -1,30 +1,14 @@
 import { useState } from 'react'
-import { Plus, ScanLine, X, List } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { Plus, ScanLine, List } from 'lucide-react'
 import ScannerModal from './modals/ScannerModal'
-import ResultModal from './modals/ResultModal'
 import CreateComponentModal from './modals/CreateComponentModal'
-import ListComponentsModal from './modals/ListComponentsModal'
 import './ComponentsPage.css'
 
 const ComponentsPage = () => {
+  const navigate = useNavigate()
   const [isScanning, setIsScanning] = useState(false)
-  const [scannedData, setScannedData] = useState(null)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
-  const [isListModalOpen, setIsListModalOpen] = useState(false)
-
-  // Sample data for list modal (replace with actual data from API)
-  const [components] = useState([
-    {
-      name: 'Moteur V6',
-      reference: 'ENG-2024-001',
-      description: 'Moteur à essence V6 3.0L'
-    },
-    {
-      name: 'Boîte de vitesses',
-      reference: 'TRANS-2024-001',
-      description: 'Boîte de vitesses automatique 8 vitesses'
-    }
-  ])
 
   const handleCreateComponent = () => {
     console.log('Create component clicked')
@@ -33,13 +17,13 @@ const ComponentsPage = () => {
 
   const handleListComponent = () => {
     console.log('List components clicked')
-    setIsListModalOpen(true)
+    // Navigate to the components list page
+    navigate('/components/list')
   }
 
   const handleScanComponent = () => {
     console.log('Scan component clicked')
     setIsScanning(true)
-    setScannedData(null)
   }
 
   const handleCloseScan = () => {
@@ -47,11 +31,13 @@ const ComponentsPage = () => {
   }
 
   const handleScanSuccess = (data) => {
-    setScannedData(data)
+    console.log('Scanned QR Code:', data)
+    // Redirect to component details page with the scanned QR code
+    navigate(`/components/details/${encodeURIComponent(data)}`)
   }
 
   const handleCloseResult = () => {
-    setScannedData(null)
+    setIsScanning(false)
   }
 
   return (
@@ -121,22 +107,9 @@ const ComponentsPage = () => {
         onSuccess={handleScanSuccess}
       />
 
-      <ResultModal 
-        isOpen={scannedData !== null} 
-        onClose={handleCloseResult}
-        data={scannedData}
-        title="QR Code Scanné"
-      />
-
       <CreateComponentModal 
         isOpen={isCreateModalOpen} 
         onClose={() => setIsCreateModalOpen(false)}
-      />
-
-      <ListComponentsModal 
-        isOpen={isListModalOpen} 
-        onClose={() => setIsListModalOpen(false)}
-        components={components}
       />
     </div>
   )

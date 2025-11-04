@@ -6,6 +6,7 @@
   "license": "ISC",
   "author": "",
   "type": "module",
+  "proxy": "https://192.168.1.180:8000",
   "main": "eslint.config.js",
   "scripts": {
     "dev": "vite",
