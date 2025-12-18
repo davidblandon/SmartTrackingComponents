@@ -1,25 +1,25 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Search, Package } from 'lucide-react'
-import { componentAPI } from '../../api/'
-import './ComponentsListPage.css'
+import { carAPI } from '../../api/'
+import './CarsListPage.css'
 
-const ComponentsListPage = () => {
+const CarsListPage = () => {
   const navigate = useNavigate()
-  const [components, setComponents] = useState([])
+  const [cars, setCars] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fetchComponents = async () => {
+    const fetchCars = async () => {
       try {
         setLoading(true)
         
         // Use the API configuration
-        const data = await componentAPI.list()
-        setComponents(data)
+        const data = await carAPI.list()
+        setCars(data)
       } catch (error) {
-        console.error('Error fetching components:', error)
+        console.error('Error fetching Cars:', error)
         
         // Fallback to sample data if API fails
         const sampleData = [
@@ -49,33 +49,33 @@ const ComponentsListPage = () => {
           }
         ]
         
-        setComponents(sampleData)
+        setCars(sampleData)
       } finally {
         setLoading(false)
       }
     }
 
-    fetchComponents()
+    fetchCars()
   }, [])
 
-  const filteredComponents = components.filter(component =>
-    component.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    component.reference.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    component.description.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCars = cars.filter(Car =>
+    Car.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    Car.reference.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    Car.description.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const handleBack = () => {
     navigate(-1)
   }
 
-  const handleComponentClick = (component) => {
-    // Navigate to component detail page or handle click
-    console.log('Component clicked:', component)
-    // navigate(`/components/${component.id}`)
+  const handleCarClick = (car) => {
+    // Navigate to car detail page or handle click
+    console.log('Car clicked:', car)
+    // navigate(`/cars/${car.id}`)
   }
 
   return (
-    <div className="components-list-page">
+    <div className="cars-list-page">
       <div className="list-container">
         {/* Header */}
         <div className="list-header">
@@ -85,7 +85,7 @@ const ComponentsListPage = () => {
           </button>
           <h1 className="list-title">Liste des Composants</h1>
           <p className="list-subtitle">
-            {components.length} composant{components.length !== 1 ? 's' : ''} disponible{components.length !== 1 ? 's' : ''}
+            {cars.length} composant{cars.length !== 1 ? 's' : ''} disponible{cars.length !== 1 ? 's' : ''}
           </p>
         </div>
 
@@ -101,14 +101,14 @@ const ComponentsListPage = () => {
           />
         </div>
 
-        {/* Components List */}
-        <div className="components-list">
+        {/* cars List */}
+        <div className="cars-list">
           {loading ? (
             <div className="loading-state">
               <div className="spinner"></div>
               <p>Chargement des composants...</p>
             </div>
-          ) : filteredComponents.length === 0 ? (
+          ) : filteredcars.length === 0 ? (
             <div className="empty-state">
               <Package size={64} className="empty-icon" />
               <h3>Aucun composant trouvé</h3>
@@ -119,21 +119,21 @@ const ComponentsListPage = () => {
               </p>
             </div>
           ) : (
-            <div className="components-grid">
-              {filteredComponents.map((component) => (
+            <div className="cars-grid">
+              {filteredCars.map((car) => (
                 <div
-                  key={component.id}
-                  className="component-card"
-                  onClick={() => handleComponentClick(component)}
+                  key={car.id}
+                  className="car-card"
+                  onClick={() => handleCarClick(car)}
                 >
-                  <div className="component-header">
-                    <div className="component-icon">
+                  <div className="car-header">
+                    <div className="car-icon">
                       <Package size={24} />
                     </div>
-                    <span className="component-reference">{component.reference}</span>
+                    <span className="car-reference">{car.reference}</span>
                   </div>
-                  <h3 className="component-name">{component.name}</h3>
-                  <p className="component-description">{component.description}</p>
+                  <h3 className="car-name">{car.name}</h3>
+                  <p className="car-description">{car.description}</p>
                 </div>
               ))}
             </div>
@@ -144,4 +144,4 @@ const ComponentsListPage = () => {
   )
 }
 
-export default ComponentsListPage
+export default CarsListPage

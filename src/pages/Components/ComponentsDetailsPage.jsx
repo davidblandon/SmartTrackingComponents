@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, Package, AlertCircle, Loader } from 'lucide-react'
-import { componentAPI } from '../../api/config'
+import { ArrowLeft, Package, AlertCircle, Loader, FileText, Image } from 'lucide-react'
+import { componentAPI } from '../../api/'
 import './ComponentsDetailsPage.css'
 
 const ComponentDetailsPage = () => {
@@ -16,76 +16,53 @@ const ComponentDetailsPage = () => {
       try {
         setLoading(true)
         setError(null)
-
-        // Use the API configuration
         const data = await componentAPI.getByQRCode(qrCode)
-        console.log(data);
         setComponent(data)
       } catch (err) {
         console.error('Error fetching component:', err)
-        
-        // Handle specific error messages
-        if (err.message.includes('404')) {
-          setError('Composant non trouvé')
-        } else if (err.message.includes('Failed to fetch')) {
-          setError('Impossible de se connecter au serveur')
-        } else {
-          setError(err.message || 'Erreur lors du chargement du composant')
-        }
+        if (err.message.includes('404')) setError('Composant non trouvé')
+        else if (err.message.includes('Failed to fetch')) setError('Impossible de se connecter au serveur')
+        else setError(err.message || 'Erreur lors du chargement du composant')
       } finally {
         setLoading(false)
       }
     }
 
-    if (qrCode) {
-      fetchComponentDetails()
-    }
+    if (qrCode) fetchComponentDetails()
   }, [qrCode])
 
-  const handleBack = () => {
-    navigate(-1)
-  }
+  const handleBack = () => navigate(-1)
+  const handleScanAnother = () => navigate('/components')
 
-  const handleScanAnother = () => {
-    navigate('/components')
-  }
-
-  if (loading) {
+  if (loading)
     return (
       <div className="component-details-page">
-        <div className="details-container">
-          <div className="loading-container">
-            <Loader className="loading-spinner" size={48} />
-            <h2>Chargement des détails...</h2>
-            <p>Veuillez patienter</p>
+        <div className="details-container loading-container">
+          <Loader size={48} className="loading-spinner" />
+          <h2>Chargement des détails...</h2>
+          <p>Veuillez patienter</p>
+        </div>
+      </div>
+    )
+
+  if (error)
+    return (
+      <div className="component-details-page">
+        <div className="details-container error-container">
+          <AlertCircle size={64} className="error-icon" />
+          <h2>Erreur</h2>
+          <p>{error}</p>
+          <div className="error-actions">
+            <button className="btn-secondary" onClick={handleBack}>
+              <ArrowLeft size={20} /> Retour
+            </button>
+            <button className="btn-primary" onClick={handleScanAnother}>
+              Scanner un autre composant
+            </button>
           </div>
         </div>
       </div>
     )
-  }
-
-  if (error) {
-    return (
-      <div className="component-details-page">
-        <div className="details-container">
-          <div className="error-container">
-            <AlertCircle className="error-icon" size={64} />
-            <h2>Erreur</h2>
-            <p>{error}</p>
-            <div className="error-actions">
-              <button className="btn-secondary" onClick={handleBack}>
-                <ArrowLeft size={20} />
-                Retour
-              </button>
-              <button className="btn-primary" onClick={handleScanAnother}>
-                Scanner un autre composant
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="component-details-page">
@@ -93,8 +70,7 @@ const ComponentDetailsPage = () => {
         {/* Header */}
         <div className="details-header">
           <button className="back-button" onClick={handleBack}>
-            <ArrowLeft size={24} />
-            <span>Retour</span>
+            <ArrowLeft size={24} /> <span>Retour</span>
           </button>
         </div>
 
@@ -111,60 +87,51 @@ const ComponentDetailsPage = () => {
           </div>
 
           <div className="card-body">
-            {/* Reference Section */}
+            {/* Name */}
             <div className="info-section">
-              <h3 className="section-title">Référence</h3>
-              <div className="info-value reference-value">
-                {component?.reference || qrCode}
-              </div>
+              <h3 className="section-title">Nom</h3>
+              <p className="info-value">{component?.name}</p>
             </div>
 
-            {/* Description Section */}
-            {component?.description && (
-              <div className="info-section">
-                <h3 className="section-title">Description</h3>
-                <p className="info-value">{component.description}</p>
-              </div>
-            )}
+            {/* Nature */}
+            <div className="info-section">
+              <h3 className="section-title">Nature</h3>
+              <p className="info-value">{component?.nature}</p>
+            </div>
 
-            {/* Additional Details - Customize based on your API response */}
-            {component?.category && (
-              <div className="info-section">
-                <h3 className="section-title">Catégorie</h3>
-                <p className="info-value">{component.category}</p>
-              </div>
-            )}
-
-            {component?.manufacturer && (
-              <div className="info-section">
-                <h3 className="section-title">Fabricant</h3>
-                <p className="info-value">{component.manufacturer}</p>
-              </div>
-            )}
-
-            {component?.status && (
-              <div className="info-section">
-                <h3 className="section-title">Statut</h3>
-                <span className={`status-badge status-${component.status.toLowerCase()}`}>
-                  {component.status}
-                </span>
-              </div>
-            )}
+            {/* Uploaded_file */}
+            <div className="info-section">
+              <h3 className="section-title">Fichier</h3>
+              {component?.Uploaded_file ? (
+                component.Uploaded_file.endsWith('.png') ||
+                component.Uploaded_file.endsWith('.jpg') ||
+                component.Uploaded_file.endsWith('.jpeg') ? (
+                  <img
+                    src={component.Uploaded_file}
+                    alt="Composant"
+                    style={{ maxWidth: '100%', borderRadius: '8px' }}
+                  />
+                ) : (
+                  <a href={component.Uploaded_file} target="_blank" rel="noreferrer" className="file-link">
+                    <FileText size={20} /> Télécharger le fichier
+                  </a>
+                )
+              ) : (
+                <span>Aucun fichier disponible</span>
+              )}
+            </div>
 
             {/* QR Code Info */}
             <div className="info-section qr-section">
               <h3 className="section-title">Code QR Scanné</h3>
-              <div className="qr-code-display">
-                <code>{qrCode}</code>
-              </div>
+              <code>{qrCode}</code>
             </div>
           </div>
 
           {/* Actions */}
           <div className="card-footer">
             <button className="btn-secondary" onClick={handleBack}>
-              <ArrowLeft size={20} />
-              Retour
+              <ArrowLeft size={20} /> Retour
             </button>
             <button className="btn-primary" onClick={handleScanAnother}>
               Scanner un autre composant
