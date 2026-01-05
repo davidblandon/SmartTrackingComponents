@@ -282,6 +282,38 @@
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* Logout Button Styles */
+.nav-link-logout {
+  margin-left: 8px;
+  color: #fca5a5 !important;
+}
+
+.nav-link-logout:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #ef4444 !important;
+}
+
+.nav-link-logout:hover .nav-link-underline {
+  background: #ef4444;
+}
+
+.nav-link-logout:hover .nav-link-icon {
+  transform: scale(1.1) rotate(-15deg);
+}
+
+/* Mobile Logout Button */
+.nav-mobile-logout {
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(77, 151, 208, 0.2);
+  color: #fca5a5 !important;
+}
+
+.nav-mobile-logout:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #ef4444 !important;
+}
+
 @keyframes pulse {
   0%, 100% {
     opacity: 1;

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { authAPI } from '../../../api';
 import logo from '../../../assets/Logo.png';
-import { Menu, X, Home, Box, Car, Users } from 'lucide-react';
+import { Menu, X, Home, Box, Car, Users, LogOut } from 'lucide-react';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -21,6 +22,12 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
+  const handleLogout = () => {
+    authAPI.logout();
+    setIsOpen(false);
+    navigate('/login');
+  };
+
   const isActiveLink = (path) => {
     return location.pathname === path;
   };
@@ -33,12 +40,12 @@ const Navbar = () => {
         <div className="navbar-content">
           {/* Logo */}
           <div className="logo-section">
-          <div className="logo-icon-wrapper">
-            <div className="logo-glow"></div>
-            <div className="logo-icon">
-              <img src={logo} alt="Smart Tracking Logo" className="logo-image" />
+            <div className="logo-icon-wrapper">
+              <div className="logo-glow"></div>
+              <div className="logo-icon">
+                <img src={logo} alt="Smart Tracking Logo" className="logo-image" />
+              </div>
             </div>
-          </div>
             <div className="logo-text">
               <h1 className="logo-title">
                 SMART <span className="logo-highlight">TRACKING</span>
@@ -65,6 +72,17 @@ const Navbar = () => {
                 </button>
               );
             })}
+
+            {/* Logout Button - Desktop */}
+            <button
+              onClick={handleLogout}
+              className="nav-link nav-link-logout"
+              title="Déconnexion"
+            >
+              <LogOut size={16} className="nav-link-icon" />
+              <span className="nav-link-text">Déconnexion</span>
+              <div className="nav-link-underline"></div>
+            </button>
           </div>
 
           {/* Mobile menu button */}
@@ -95,6 +113,15 @@ const Navbar = () => {
               </button>
             );
           })}
+
+          {/* Logout Button - Mobile */}
+          <button
+            onClick={handleLogout}
+            className="nav-mobile-link nav-mobile-logout"
+          >
+            <LogOut size={20} />
+            <span>Déconnexion</span>
+          </button>
         </div>
       </div>
 

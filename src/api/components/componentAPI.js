@@ -11,7 +11,7 @@ export const componentAPI = {
 
 
   // List all components
-  list: () => apiFetch(`${BASE}s`),
+  list: () => apiFetch(`${BASE}/all`),
 
   // Create component
   create: (name, nature, file) => {

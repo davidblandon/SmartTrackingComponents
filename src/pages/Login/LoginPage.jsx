@@ -1,21 +1,39 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { authAPI } from '../../api';
 import './LoginPage.css';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setError('');
     
-    // Simulate login process
-    setTimeout(() => {
-      console.log('Login attempt:', { email, password });
+    try {
+      // Call the login API
+      const response = await authAPI.login(email, password);
+      
+      // Store the authentication token and token type
+      authAPI.storeAuth(response.access_token, response.token_type);
+      
+      // Optionally store user email
+      authAPI.storeUser({ email });
+      
+      // Redirect to dashboard
+      navigate('/');
+    } catch (err) {
+      setError(err.message);
+      console.error('Login error:', err);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -48,7 +66,7 @@ const LoginPage = () => {
               Bienvenue sur <span className="brand-highlight">Smart Tracking Components</span>
             </h1>
             <p className="brand-description">
-              
+              Votre plateforme de gestion intelligente
             </p>
 
             <div className="feature-list">
@@ -88,6 +106,18 @@ const LoginPage = () => {
               <p className="form-subtitle">Entrez vos identifiants pour accéder à votre compte</p>
             </div>
 
+            {/* Error Message */}
+            {error && (
+              <div className="error-message">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                {error}
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="login-form">
               <div className="form-group">
                 <label htmlFor="email" className="form-label">
@@ -105,6 +135,7 @@ const LoginPage = () => {
                   placeholder="exemple@email.com"
                   className="form-input"
                   required
+                  disabled={isLoading}
                 />
               </div>
 
@@ -125,11 +156,13 @@ const LoginPage = () => {
                     placeholder="••••••••"
                     className="form-input"
                     required
+                    disabled={isLoading}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="password-toggle"
+                    disabled={isLoading}
                   >
                     {showPassword ? (
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -145,7 +178,6 @@ const LoginPage = () => {
                   </button>
                 </div>
               </div>
-
 
               <button type="submit" className="submit-button" disabled={isLoading}>
                 {isLoading ? (
@@ -168,7 +200,6 @@ const LoginPage = () => {
             </form>
 
             <div className="form-footer">
-            
             </div>
           </div>
         </div>
