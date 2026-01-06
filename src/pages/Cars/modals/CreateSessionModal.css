@@ -1,0 +1,253 @@
+/* Session Modal */
+.session-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.session-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 31, 86, 0.85);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.session-modal-container {
+  position: relative;
+  background: white;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+  overflow: hidden;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.session-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+.session-modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0A1F56;
+  margin: 0;
+}
+
+.session-close-button {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.session-close-button:hover {
+  background: #f3f4f6;
+  color: #0A1F56;
+}
+
+.session-close-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.session-modal-content {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.session-error {
+  background: #fee2e2;
+  border: 2px solid #ef4444;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.session-error p {
+  color: #991b1b;
+  font-weight: 500;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.session-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.session-label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0A1F56;
+  margin-bottom: 0.5rem;
+}
+
+.required {
+  color: #ef4444;
+}
+
+.session-input,
+.session-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #0A1F56;
+  transition: all 0.2s;
+  background: white;
+}
+
+.session-input:focus,
+.session-textarea:focus {
+  outline: none;
+  border-color: #4D97D0;
+  box-shadow: 0 0 0 3px rgba(77, 151, 208, 0.1);
+}
+
+.session-input:disabled,
+.session-textarea:disabled {
+  background: #f3f4f6;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.session-textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+.session-modal-footer {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 2px solid #f3f4f6;
+  background: #fafafa;
+}
+
+.session-btn-secondary,
+.session-btn-primary {
+  flex: 1;
+  padding: 0.875rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+}
+
+.session-btn-secondary {
+  background: white;
+  color: #6b7280;
+  border: 2px solid #e5e7eb;
+}
+
+.session-btn-secondary:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+
+.session-btn-primary {
+  background: linear-gradient(135deg, #4D97D0, #6bb3e0);
+  color: white;
+}
+
+.session-btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(77, 151, 208, 0.3);
+}
+
+.session-btn-secondary:disabled,
+.session-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.session-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .session-modal {
+    padding: 0.5rem;
+  }
+
+  .session-modal-title {
+    font-size: 1.25rem;
+  }
+
+  .session-modal-header {
+    padding: 1rem;
+  }
+
+  .session-modal-content {
+    padding: 1rem;
+  }
+
+  .session-modal-footer {
+    padding: 1rem;
+    flex-direction: column;
+  }
+
+  .session-btn-secondary,
+  .session-btn-primary {
+    width: 100%;
+  }
+}

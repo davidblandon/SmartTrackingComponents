@@ -11,57 +11,59 @@ const CarsListPage = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fetchCars = async () => {
-      try {
-        setLoading(true)
-        
-        // Use the API configuration
-        const data = await carAPI.list()
-        setCars(data)
-      } catch (error) {
-        console.error('Error fetching Cars:', error)
-        
-        // Fallback to sample data if API fails
-        const sampleData = [
-          {
-            id: 1,
-            name: 'Moteur V6',
-            reference: 'ENG-2024-001',
-            description: 'Moteur à essence V6 3.0L'
-          },
-          {
-            id: 2,
-            name: 'Boîte de vitesses',
-            reference: 'TRANS-2024-001',
-            description: 'Boîte de vitesses automatique 8 vitesses'
-          },
-          {
-            id: 3,
-            name: 'Système de freinage',
-            reference: 'BRAKE-2024-001',
-            description: 'Système de freinage ABS avec assistance électronique'
-          },
-          {
-            id: 4,
-            name: 'Suspension avant',
-            reference: 'SUSP-2024-001',
-            description: 'Suspension pneumatique avant adaptative'
-          }
-        ]
-        
-        setCars(sampleData)
-      } finally {
-        setLoading(false)
-      }
+  const fetchCars = async () => {
+    try {
+      setLoading(true)
+
+      // Use the API configuration
+      const data = await carAPI.list()
+      setCars(data)
+    } catch (error) {
+      console.error('Error fetching Cars:', error)
+
+      // Fallback to sample data if API fails
+      const sampleData = [
+        {
+          name: 'Ferrari F40',
+          hours: 1250,
+          owner: 'Jean Dupont',
+          car_qr: 'CAR-2024-001'
+        },
+        {
+          name: 'Porsche 911 GT3',
+          hours: 850,
+          owner: 'Marie Martin',
+          car_qr: 'CAR-2024-002'
+        },
+        {
+          name: 'Lamborghini Huracán',
+          hours: 620,
+          owner: 'Pierre Dubois',
+          car_qr: 'CAR-2024-003'
+        },
+        {
+          name: 'McLaren 720S',
+          hours: 450,
+          owner: 'Sophie Bernard',
+          car_qr: 'CAR-2024-004'
+        }
+      ]
+
+      setCars(sampleData)
+    } finally {
+      setLoading(false)
     }
+  }
 
-    fetchCars()
-  }, [])
+  fetchCars()
+}, [])
 
-  const filteredCars = cars.filter(Car =>
-    Car.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    Car.reference.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    Car.description.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCars = cars.filter(car =>
+    (car.name && car.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (car.reference && car.reference.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (car.description && car.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (car.qr_code && car.qr_code.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (car.nature && car.nature.toLowerCase().includes(searchTerm.toLowerCase()))
   )
 
   const handleBack = () => {
@@ -71,7 +73,7 @@ const CarsListPage = () => {
   const handleCarClick = (car) => {
     // Navigate to car detail page or handle click
     console.log('Car clicked:', car)
-    // navigate(`/cars/${car.id}`)
+    navigate(`/cars/details/${car.car_qr}`)
   }
 
   return (
@@ -83,9 +85,9 @@ const CarsListPage = () => {
             <ArrowLeft size={24} />
             <span>Retour</span>
           </button>
-          <h1 className="list-title">Liste des Composants</h1>
+          <h1 className="list-title">Liste des Voitures</h1>
           <p className="list-subtitle">
-            {cars.length} composant{cars.length !== 1 ? 's' : ''} disponible{cars.length !== 1 ? 's' : ''}
+            {cars.length} voiture{cars.length !== 1 ? 's' : ''} disponible{cars.length !== 1 ? 's' : ''}
           </p>
         </div>
 
@@ -101,28 +103,28 @@ const CarsListPage = () => {
           />
         </div>
 
-        {/* cars List */}
+        {/* Cars List */}
         <div className="cars-list">
           {loading ? (
             <div className="loading-state">
               <div className="spinner"></div>
-              <p>Chargement des composants...</p>
+              <p>Chargement des voitures...</p>
             </div>
-          ) : filteredcars.length === 0 ? (
+          ) : filteredCars.length === 0 ? (
             <div className="empty-state">
               <Package size={64} className="empty-icon" />
-              <h3>Aucun composant trouvé</h3>
+              <h3>Aucune voiture trouvée</h3>
               <p>
                 {searchTerm
                   ? 'Essayez avec des termes de recherche différents'
-                  : 'Aucun composant disponible pour le moment'}
+                  : 'Aucune voiture disponible pour le moment'}
               </p>
             </div>
           ) : (
             <div className="cars-grid">
-              {filteredCars.map((car) => (
+              {filteredCars.map((car, index) => (
                 <div
-                  key={car.id}
+                  key={car.id || car.qr_code || car.reference || index}
                   className="car-card"
                   onClick={() => handleCarClick(car)}
                 >
@@ -130,10 +132,10 @@ const CarsListPage = () => {
                     <div className="car-icon">
                       <Package size={24} />
                     </div>
-                    <span className="car-reference">{car.reference}</span>
+                    <span className="car-reference">{car.owner || 'N/A'}</span>
                   </div>
-                  <h3 className="car-name">{car.name}</h3>
-                  <p className="car-description">{car.description}</p>
+                  <h3 className="car-name">{car.name || 'Sans nom'}</h3>
+                
                 </div>
               ))}
             </div>

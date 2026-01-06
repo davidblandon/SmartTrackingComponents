@@ -14,7 +14,6 @@ const Navbar = () => {
     { id: 'home', label: 'Accueil', icon: Home, path: '/' },
     { id: 'components', label: 'Composants', icon: Box, path: '/components' },
     { id: 'cars', label: 'Voitures', icon: Car, path: '/cars' },
-    { id: 'clients', label: 'Clients', icon: Users, path: '/clients' }
   ];
 
   const handleLinkClick = (path) => {

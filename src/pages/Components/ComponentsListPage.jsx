@@ -71,7 +71,7 @@ const ComponentsListPage = () => {
   const handleComponentClick = (component) => {
     // Navigate to component detail page or handle click
     console.log('Component clicked:', component)
-    // navigate(`/components/${component.id}`)
+    navigate(`/components/details/${component.component_qr}`)
   }
 
   return (
